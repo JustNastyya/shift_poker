@@ -1,0 +1,329 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ScoreCalculator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">service</a>
+</div>
+
+<h1>Coverage Summary for Class: ScoreCalculator (service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+<th class="coverageStat 
+">
+  Instruction, %
+</th>
+</tr>
+<tr>
+  <td class="name">ScoreCalculator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.7%
+  </span>
+  <span class="absValue">
+    (66/69)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.9%
+  </span>
+  <span class="absValue">
+    (71/74)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.6%
+  </span>
+  <span class="absValue">
+    (430/436)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ScoreCalculator$getGameScore$$inlined$sortedByDescending$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasFlush$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasFourOfAKind$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasFullHouse$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasOnePair$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasOneTriple$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$hasTwoPair$$inlined$groupingBy$1</td>
+    <td class="coverageStat"/>
+  </tr>
+  <tr>
+    <td class="name">ScoreCalculator$WhenMappings</td>
+    <td class="coverageStat"/>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.7%
+  </span>
+  <span class="absValue">
+    (66/69)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.9%
+  </span>
+  <span class="absValue">
+    (71/74)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.6%
+  </span>
+  <span class="absValue">
+    (430/436)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package service
+&nbsp;
+&nbsp;import entity.*
+&nbsp;
+&nbsp;/**
+&nbsp; * calculates end game score
+&nbsp; */
+<b class="fc">&nbsp;class ScoreCalculator() {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * calculates the game score (the places of players)
+&nbsp;     * based on players hands
+&nbsp;     * 
+&nbsp;     * @param playerList - a list of players
+&nbsp;     * 
+&nbsp;     * includes only non none players
+&nbsp;     * 
+&nbsp;     * returns a `List&lt;Pair&lt;Int, Player&gt;&gt;` with the players place and
+&nbsp;     * players object
+&nbsp;     */
+&nbsp;    fun getGameScore(playerList: List&lt;Player&gt;): List&lt;Pair&lt;Int, Player&gt;&gt; {
+<b class="fc">&nbsp;        val readPlayers = playerList.filter {!it.isNone}</b>
+<b class="fc">&nbsp;        val playerScores = readPlayers.map {</b>
+<b class="fc">&nbsp;            player -&gt; player to getMaxPlayerCombo(player)</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        val sortedScores = playerScores.sortedByDescending {it.second}</b>
+<b class="fc">&nbsp;        println(&quot;-----------------------------&quot;)</b>
+<b class="fc">&nbsp;        val results = mutableListOf&lt;Pair&lt;Int, Player&gt;&gt;()</b>
+<b class="fc">&nbsp;        var currentPlace = 1</b>
+<b class="fc">&nbsp;        var prevScore: Int? = null</b>
+&nbsp;
+<b class="fc">&nbsp;        for (scoreInfo in sortedScores) {</b>
+<b class="fc">&nbsp;            val (player, score) = scoreInfo</b>
+<b class="fc">&nbsp;            println(&quot;${player.name} $score&quot;)</b>
+<b class="fc">&nbsp;            if (prevScore != null &amp;&amp; score &lt; prevScore) {</b>
+<b class="fc">&nbsp;                currentPlace++</b>
+&nbsp;            }
+<b class="fc">&nbsp;            results.add(currentPlace to player)</b>
+<b class="fc">&nbsp;            prevScore = score</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return results</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun getMaxPlayerCombo(player: Player): Int {
+<b class="fc">&nbsp;        val cardsList = player.handCards + player.openCards</b>
+&nbsp;
+<b class="fc">&nbsp;        val cardsValuesListInt = cardsList.map { cardValueToInt(it.value) }</b>
+<b class="fc">&nbsp;        val cardsSuitsListInt = cardsList.map { cardSuitToInt(it.suit) }</b>
+&nbsp;
+<b class="fc">&nbsp;        return when {</b>
+<b class="fc">&nbsp;            hasRoyalFlush(cardsValuesListInt, cardsSuitsListInt) -&gt; 10</b>
+<b class="fc">&nbsp;            hasStraightFlush(cardsValuesListInt, cardsSuitsListInt) -&gt; 9</b>
+<b class="fc">&nbsp;            hasFourOfAKind(cardsValuesListInt) -&gt; 8</b>
+<b class="fc">&nbsp;            hasFullHouse(cardsValuesListInt) -&gt; 7</b>
+<b class="fc">&nbsp;            hasFlush(cardsSuitsListInt) -&gt; 6</b>
+<b class="fc">&nbsp;            hasStraight(cardsValuesListInt) -&gt; 5</b>
+<b class="fc">&nbsp;            hasOneTriple(cardsValuesListInt) -&gt; 4</b>
+<b class="fc">&nbsp;            hasTwoPair(cardsValuesListInt) -&gt; 3</b>
+<b class="fc">&nbsp;            hasOnePair(cardsValuesListInt) -&gt; 2</b>
+<b class="fc">&nbsp;            else -&gt; 0</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasOnePair(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        return cardsValues.groupingBy{it}</b>
+<b class="fc">&nbsp;            .eachCount()</b>
+<b class="fc">&nbsp;            .any { it.value &gt;= 2 }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasOneTriple(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        return cardsValues.groupingBy{it}</b>
+<b class="fc">&nbsp;            .eachCount()</b>
+<b class="fc">&nbsp;            .any { it.value &gt;= 3 }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasTwoPair(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        val counts = cardsValues.groupingBy{it}.eachCount().values</b>
+<b class="fc">&nbsp;        return counts.count{it &gt;= 2} &gt;= 2</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasStraight(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        val cardsSorted = cardsValues.sorted()</b>
+<b class="fc">&nbsp;        var hasStraight = true</b>
+&nbsp;
+<b class="fc">&nbsp;        for (i in 1..cardsSorted.size - 1) {</b>
+<b class="fc">&nbsp;            if (cardsSorted[i] != cardsSorted[i - 1] + 1) {</b>
+<b class="fc">&nbsp;                hasStraight = false</b>
+&nbsp;            }
+&nbsp;        }
+<b class="pc">&nbsp;        if (cardsSorted == listOf(0, 1, 2, 3, 12)) {</b>
+<b class="nc">&nbsp;            hasStraight = true</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return hasStraight</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasFullHouse(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        val counts = cardsValues.groupingBy{it}.eachCount().values</b>
+<b class="fc">&nbsp;        return counts.contains(2) &amp;&amp; counts.contains(3)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasFlush(cardSuits: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        return cardSuits.groupingBy{it}.eachCount().values.contains(5)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasFourOfAKind(cardsValues: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        val counts = cardsValues.groupingBy{it}.eachCount().values</b>
+<b class="fc">&nbsp;        return counts.contains(4)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasStraightFlush(cardsValues: List&lt;Int&gt;, cardsSuits: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        return hasStraight(cardsValues) &amp;&amp; hasFlush(cardsSuits)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun hasRoyalFlush(cardsValue: List&lt;Int&gt;, cardsSuits: List&lt;Int&gt;): Boolean {
+<b class="fc">&nbsp;        return hasStraightFlush(cardsValue, cardsSuits) &amp;&amp;</b>
+<b class="fc">&nbsp;                cardsValue.contains(12)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cardSuitToInt(cardSuit: CardSuit): Int {
+<b class="fc">&nbsp;        return when (cardSuit) {</b>
+<b class="fc">&nbsp;            CardSuit.CLUBS -&gt; 0</b>
+<b class="fc">&nbsp;            CardSuit.DIAMONDS -&gt; 1</b>
+<b class="fc">&nbsp;            CardSuit.HEARTS -&gt; 2</b>
+<b class="fc">&nbsp;            CardSuit.SPADES -&gt; 3</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cardValueToInt(cardValue: CardValue): Int {
+<b class="pc">&nbsp;        return when (cardValue) {</b>
+<b class="fc">&nbsp;            CardValue.TWO -&gt; 0</b>
+<b class="fc">&nbsp;            CardValue.THREE -&gt; 1</b>
+<b class="fc">&nbsp;            CardValue.FOUR -&gt; 2</b>
+<b class="fc">&nbsp;            CardValue.FIVE -&gt; 3</b>
+<b class="fc">&nbsp;            CardValue.SIX -&gt; 4</b>
+<b class="fc">&nbsp;            CardValue.SEVEN -&gt; 5</b>
+<b class="nc">&nbsp;            CardValue.EIGHT -&gt; 6</b>
+<b class="nc">&nbsp;            CardValue.NINE -&gt; 7</b>
+<b class="fc">&nbsp;            CardValue.TEN -&gt; 8</b>
+<b class="fc">&nbsp;            CardValue.JACK -&gt; 9</b>
+<b class="fc">&nbsp;            CardValue.QUEEN -&gt; 10</b>
+<b class="fc">&nbsp;            CardValue.KING -&gt; 11</b>
+<b class="fc">&nbsp;            CardValue.ACE -&gt; 12</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-03-05 10:31</div>
+</div>
+</body>
+</html>
